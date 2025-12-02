@@ -43,7 +43,7 @@ class _SettingsPaneState extends ConsumerState<SettingsPane> {
 
     final deviceInfo = ref
         .watch(infoProvider)
-        .firstWhereOrNull((info) => info.serialNo == dev.serialNo);
+        .firstWhereOrNull((info) => info.deviceId == dev.id);
 
     return PgSectionCardNoScroll(
       label: el.deviceSettingsLoc.title,

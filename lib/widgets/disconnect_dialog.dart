@@ -40,7 +40,7 @@ class _DisconnectDialogState extends ConsumerState<DisconnectDialog> {
 
     final info = ref
         .read(infoProvider)
-        .firstWhereOrNull((i) => i.serialNo == widget.device.serialNo);
+        .firstWhereOrNull((i) => i.deviceId == widget.device.id);
 
     final device = widget.device;
 

@@ -52,7 +52,7 @@ class _DeviceSettingsScreenState extends ConsumerState<DeviceSettingsScreen> {
 
     final deviceInfo = ref
         .read(infoProvider)
-        .firstWhereOrNull((info) => info.serialNo == dev.serialNo);
+        .firstWhereOrNull((info) => info.deviceId == dev.id);
 
     namecontroller =
         TextEditingController(text: deviceInfo?.deviceName ?? dev.modelName);
@@ -80,7 +80,7 @@ class _DeviceSettingsScreenState extends ConsumerState<DeviceSettingsScreen> {
   Widget build(BuildContext context) {
     final deviceInfo = ref
         .watch(infoProvider)
-        .firstWhereOrNull((info) => info.serialNo == dev.serialNo);
+        .firstWhereOrNull((info) => info.deviceId == dev.id);
 
     final currentState = ref.watch(deviceSettingsStateProvider(dev));
 
@@ -138,7 +138,7 @@ class _DeviceSettingsScreenState extends ConsumerState<DeviceSettingsScreen> {
   Future<void> _save() async {
     final newState = ref.read(deviceSettingsStateProvider(dev));
     final deviceInfo =
-        ref.read(infoProvider).firstWhere((i) => i.serialNo == dev.serialNo);
+        ref.read(infoProvider).firstWhere((i) => i.deviceId == dev.id);
 
     if (newState.deviceName != deviceInfo.deviceName) {
       final newInfo = deviceInfo.copyWith(deviceName: namecontroller.text);
@@ -182,7 +182,7 @@ class _DeviceSettingsScreenState extends ConsumerState<DeviceSettingsScreen> {
 
     final deviceInfo = ref
         .read(infoProvider)
-        .firstWhereOrNull((info) => info.serialNo == dev.serialNo);
+        .firstWhereOrNull((info) => info.deviceId == dev.id);
 
     final info =
         await AdbUtils.getDeviceInfoFor(ref.read(execDirProvider), dev);
@@ -210,7 +210,7 @@ class _DeviceSettingsScreenState extends ConsumerState<DeviceSettingsScreen> {
   //   if (!textBox.hasFocus) {
   //     final deviceInfo = ref
   //         .read(infoProvider)
-  //         .firstWhereOrNull((info) => info.serialNo == dev.serialNo);
+  //         .firstWhereOrNull((info) => info.deviceId == dev.id);
   //     namecontroller =
   //         TextEditingController(text: deviceInfo?.deviceName ?? dev.modelName);
   //     setState(() {});

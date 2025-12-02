@@ -50,7 +50,7 @@ class _AppListPanelState extends ConsumerState<AppListPanel> {
       final workDir = ref.read(execDirProvider);
       var deviceInfo = ref
           .read(infoProvider)
-          .firstWhere((info) => info.serialNo == widget.device.serialNo);
+          .firstWhere((info) => info.deviceId == widget.device.id);
 
       final res = await CommandRunner.runScrcpyCommand(
         workDir,
@@ -72,8 +72,8 @@ class _AppListPanelState extends ConsumerState<AppListPanel> {
 
   Future<void> _startAutomation(String appName) async {
     final projectPath = ref.read(automationProjectPathProvider);
-    final serialNo = widget.device.serialNo;
-    final terminalState = ref.read(terminalStateProvider)[serialNo];
+    final deviceId = widget.device.id;  // 使用 id 而非 serialNo，确保唯一性
+    final terminalState = ref.read(terminalStateProvider)[deviceId];
     
     // 检查是否有任务正在运行
     if (terminalState?.isExecuting == true && terminalState?.runningAppName != null) {
@@ -91,7 +91,7 @@ class _AppListPanelState extends ConsumerState<AppListPanel> {
       }
       
       // 停止当前任务
-      ref.read(terminalStateProvider.notifier).interruptCommand(serialNo);
+      ref.read(terminalStateProvider.notifier).interruptCommand(deviceId);
       
       // 等待一下让进程停止
       await Future.delayed(const Duration(milliseconds: 500));
@@ -147,17 +147,16 @@ class _AppListPanelState extends ConsumerState<AppListPanel> {
   }
 
   void _executeAutomationCommand(String projectPath, String appName) {
-    final deviceId = widget.device.id;  // 使用设备 ID
-    final serialNo = widget.device.serialNo;
+    final deviceId = widget.device.id;  // 使用设备 ID 作为唯一标识
     
     // 先更新终端的工作目录
-    ref.read(terminalStateProvider.notifier).updateDirectory(serialNo, projectPath);
+    ref.read(terminalStateProvider.notifier).updateDirectory(deviceId, projectPath);
     
     // 只执行 uv 命令（工作目录已设置）
     final command = 'uv run main.py -s "$deviceId" "$appName"';
     
     // 在终端中执行（使用带 appName 的方法）
-    ref.read(terminalStateProvider.notifier).executeAutomationCommand(serialNo, command, appName);
+    ref.read(terminalStateProvider.notifier).executeAutomationCommand(deviceId, command, appName);
     
     // 滚动到顶部，显示运行中的 app
     Future.delayed(const Duration(milliseconds: 100), () {
@@ -257,11 +256,12 @@ class _AppListPanelState extends ConsumerState<AppListPanel> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    // 使用 id 匹配设备信息，因为 serialNo 在模拟器上可能重复
     final deviceInfo = ref
         .watch(infoProvider)
-        .firstWhereOrNull((info) => info.serialNo == widget.device.serialNo);
+        .firstWhereOrNull((info) => info.deviceId == widget.device.id);
     final projectPath = ref.watch(automationProjectPathProvider);
-    final terminalState = ref.watch(terminalStateProvider)[widget.device.serialNo];
+    final terminalState = ref.watch(terminalStateProvider)[widget.device.id];  // 使用 id
     final runningAppName = terminalState?.runningAppName;
 
     final appList = deviceInfo?.appList ?? [];

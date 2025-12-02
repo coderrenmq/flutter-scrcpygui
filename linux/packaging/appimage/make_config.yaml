@@ -1,4 +1,4 @@
-display_name: Scrcpy GUI
+display_name: UI Pretrain Manager
 
 icon: assets/logo.png
 
@@ -6,7 +6,7 @@ keywords:
   - scrcpy
   - gui
 
-generic_name: Scrcpy GUI
+generic_name: UI Pretrain Manager
 
 categories: 
   - Utility

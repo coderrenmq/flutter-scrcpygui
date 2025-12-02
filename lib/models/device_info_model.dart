@@ -10,7 +10,8 @@ import 'scrcpy_related/scrcpy_info/scrcpy_display.dart';
 import 'scrcpy_related/scrcpy_info/scrcpy_encoder.dart';
 
 class DeviceInfo {
-  final String serialNo; //device serial no
+  final String deviceId;   // 设备连接 ID（唯一标识）
+  final String serialNo;   // 设备序列号（模拟器可能重复）
   final String deviceName;
   final String buildVersion;
   final List<ScrcpyCamera> cameras;
@@ -20,6 +21,7 @@ class DeviceInfo {
   final List<ScrcpyApp> appList;
 
   DeviceInfo({
+    required this.deviceId,
     required this.serialNo,
     required this.deviceName,
     required this.buildVersion,
@@ -31,6 +33,7 @@ class DeviceInfo {
   });
 
   DeviceInfo copyWith({
+    String? deviceId,
     String? serialNo,
     String? deviceName,
     String? buildVersion,
@@ -41,6 +44,7 @@ class DeviceInfo {
     List<ScrcpyApp>? appList,
   }) {
     return DeviceInfo(
+      deviceId: deviceId ?? this.deviceId,
       serialNo: serialNo ?? this.serialNo,
       deviceName: deviceName ?? this.deviceName,
       buildVersion: buildVersion ?? this.buildVersion,
@@ -54,6 +58,7 @@ class DeviceInfo {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'deviceId': deviceId,
       'serialNo': serialNo,
       'deviceName': deviceName,
       'buildVersion': buildVersion,
@@ -67,6 +72,7 @@ class DeviceInfo {
 
   factory DeviceInfo.fromMap(Map<String, dynamic> map) {
     return DeviceInfo(
+      deviceId: map['deviceId'] as String? ?? map['serialNo'] as String,  // 兼容旧数据
       serialNo: map['serialNo'] as String,
       deviceName: map['deviceName'] as String,
       buildVersion: map['buildVersion'] as String,
@@ -105,14 +111,15 @@ class DeviceInfo {
 
   @override
   String toString() {
-    return 'DeviceInfo(serialNo: $serialNo, deviceName: $deviceName, buildVersion: $buildVersion, cameras: $cameras, displays: $displays, videoEncoders: $videoEncoders, audioEncoder: $audioEncoder, appList: $appList)';
+    return 'DeviceInfo(deviceId: $deviceId, serialNo: $serialNo, deviceName: $deviceName, buildVersion: $buildVersion, cameras: $cameras, displays: $displays, videoEncoders: $videoEncoders, audioEncoder: $audioEncoder, appList: $appList)';
   }
 
   @override
   bool operator ==(covariant DeviceInfo other) {
     if (identical(this, other)) return true;
 
-    return other.serialNo == serialNo &&
+    return other.deviceId == deviceId &&
+        other.serialNo == serialNo &&
         other.deviceName == deviceName &&
         other.buildVersion == buildVersion &&
         listEquals(other.cameras, cameras) &&
@@ -124,7 +131,8 @@ class DeviceInfo {
 
   @override
   int get hashCode {
-    return serialNo.hashCode ^
+    return deviceId.hashCode ^
+        serialNo.hashCode ^
         deviceName.hashCode ^
         buildVersion.hashCode ^
         cameras.hashCode ^

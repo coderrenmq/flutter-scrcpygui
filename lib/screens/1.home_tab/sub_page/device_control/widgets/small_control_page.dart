@@ -40,7 +40,7 @@ class _SmallControlPageState extends ConsumerState<SmallControlPage> {
     super.initState();
     final deviceInfo = ref
         .read(infoProvider)
-        .firstWhereOrNull((info) => info.serialNo == widget.device.serialNo);
+        .firstWhereOrNull((info) => info.deviceId == widget.device.id);
 
     WidgetsBinding.instance.addPostFrameCallback((t) {
       if (deviceInfo == null) {
@@ -74,7 +74,7 @@ class _SmallControlPageState extends ConsumerState<SmallControlPage> {
 
     final deviceInfo = ref
         .watch(infoProvider)
-        .firstWhereOrNull((info) => info.serialNo == device.serialNo);
+        .firstWhereOrNull((info) => info.deviceId == device.id);
 
     final appsList = deviceInfo?.appList ?? [];
 

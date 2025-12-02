@@ -144,6 +144,7 @@ class AdbUtils {
     final appsList = getAppsList(info.stdout);
 
     return DeviceInfo(
+      deviceId: dev.id,  // 使用设备连接 ID 作为唯一标识
       serialNo: dev.serialNo,
       deviceName: dev.modelName,
       buildVersion: buildVersion,

@@ -1,4 +1,4 @@
-# Scrcpy GUI
+# UI Pretrain Manager
 
 [![Flutter](https://img.shields.io/badge/Flutter-02569B?logo=flutter&logoColor=white)](https://flutter.dev/)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
@@ -8,7 +8,7 @@
 
 > A user-friendly graphical interface for [Scrcpy](https://github.com/Genymobile/scrcpy), built with Flutter.
 
-**Scrcpy GUI** simplifies the process of using Scrcpy, allowing you to control your Android device from your computer with ease. It provides a clean and intuitive interface, eliminating the need to memorize complex command-line arguments.
+**UI Pretrain Manager** is a tool for managing UI automation pretrain data collection on Android devices.
 
 ## ⬇️ Get the App
 
@@ -80,6 +80,13 @@ Here's a summary of the build process (see [doc/build.md](doc/build.md) for full
 *   **Bonsoir:**
     *   **Windows:** Windows 10 (19H1/1903) (May 2019 Update) or later.
     *   **Linux:** `avahi-daemon`
+
+
+### Debug Steps
+```bash
+fvm flutter run -d macos
+```
+
 
 ### Build Steps
 

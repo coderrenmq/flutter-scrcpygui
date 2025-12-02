@@ -17,8 +17,15 @@ class TerminalPanel extends ConsumerStatefulWidget {
 
 class _TerminalPanelState extends ConsumerState<TerminalPanel> {
   final ScrollController _scrollController = ScrollController();
+  
+  // 性能优化：限制显示的最大日志条数
+  static const int _maxDisplayEntries = 500;
+  
+  // 防止频繁滚动
+  bool _isScrolling = false;
 
-  String get _serialNo => widget.device.serialNo;
+  // 使用 id 而非 serialNo 作为唯一标识，避免模拟器等设备 serialNo 相同的问题
+  String get _deviceId => widget.device.id;
 
   @override
   void initState() {
@@ -26,8 +33,8 @@ class _TerminalPanelState extends ConsumerState<TerminalPanel> {
     // 确保终端状态已初始化（延迟执行避免在 build 期间修改状态）
     Future.microtask(() {
       if (mounted) {
-        ref.read(terminalStateProvider.notifier).getOrCreate(_serialNo);
-        _scrollToBottom();
+        ref.read(terminalStateProvider.notifier).getOrCreate(_deviceId);
+        _scrollToBottomDelayed();
       }
     });
   }
@@ -38,24 +45,22 @@ class _TerminalPanelState extends ConsumerState<TerminalPanel> {
     super.dispose();
   }
 
-  void _scrollToBottom() {
+  /// 延迟滚动到底部，避免频繁触发
+  void _scrollToBottomDelayed() {
+    if (_isScrolling) return;
+    _isScrolling = true;
+    
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollController.hasClients) {
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 50),
-          curve: Curves.easeOut,
-        );
+      if (_scrollController.hasClients && mounted) {
+        // 直接跳转而非动画，提升性能
+        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
       }
+      _isScrolling = false;
     });
   }
 
   void _interruptCommand() {
-    ref.read(terminalStateProvider.notifier).interruptCommand(_serialNo);
-  }
-
-  void _clearTerminal() {
-    ref.read(terminalStateProvider.notifier).clearEntries(_serialNo);
+    ref.read(terminalStateProvider.notifier).interruptCommand(_deviceId);
   }
 
   Color _getEntryColor(TerminalEntryType type) {
@@ -77,14 +82,14 @@ class _TerminalPanelState extends ConsumerState<TerminalPanel> {
     
     // 监听终端状态变化
     final allStates = ref.watch(terminalStateProvider);
-    final terminalState = allStates[_serialNo];
+    final terminalState = allStates[_deviceId];
     
     // 当 entries 变化时滚动到底部
     ref.listen(terminalStateProvider, (previous, next) {
-      final prevEntries = previous?[_serialNo]?.entries.length ?? 0;
-      final nextEntries = next[_serialNo]?.entries.length ?? 0;
+      final prevEntries = previous?[_deviceId]?.entries.length ?? 0;
+      final nextEntries = next[_deviceId]?.entries.length ?? 0;
       if (nextEntries > prevEntries) {
-        _scrollToBottom();
+        _scrollToBottomDelayed();
       }
     });
 
@@ -100,64 +105,92 @@ class _TerminalPanelState extends ConsumerState<TerminalPanel> {
       );
     }
 
+    // 性能优化：只显示最新的日志条目
+    final allEntries = terminalState.entries;
+    final displayEntries = allEntries.length > _maxDisplayEntries
+        ? allEntries.sublist(allEntries.length - _maxDisplayEntries)
+        : allEntries;
+    final entriesCount = displayEntries.length;
+    final isTruncated = allEntries.length > _maxDisplayEntries;
+
     return PgSectionCardNoScroll(
       cardPadding: EdgeInsets.zero,
-      label: '运行日志 ${terminalState.isExecuting ? "(运行中)" : ""}',
-      labelButton: Row(
-        spacing: 4,
-        children: [
-          if (terminalState.isExecuting)
-            IconButton.ghost(
-              density: ButtonDensity.iconDense,
-              icon: Icon(Icons.stop_rounded, color: Colors.red),
-              onPressed: _interruptCommand,
-            ),
-          IconButton.ghost(
-            density: ButtonDensity.iconDense,
-            icon: Icon(Icons.delete_outline_rounded),
-            onPressed: _clearTerminal,
-          ),
-        ],
-      ),
-      expandContent: true,
-      content: GestureDetector(
-        child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: const Color(0xFF1E1E1E),
-            borderRadius: theme.borderRadiusSm,
-          ),
-          child: terminalState.entries.isEmpty
-              ? Center(
-                  child: Text(
-                    '等待任务执行...',
-                    style: TextStyle(
-                      color: const Color(0xFF569CD6),
-                      fontSize: 13,
-                    ),
+      label: '运行日志 ${terminalState.isExecuting ? "(运行中)" : ""}'
+          '${isTruncated ? " [显示最近$_maxDisplayEntries条]" : ""}',
+      labelButton: terminalState.isExecuting
+          ? Tooltip(
+              tooltip: TooltipContainer(
+                child: Text('双击停止当前任务'),
+              ),
+              child: GestureDetector(
+                onDoubleTap: _interruptCommand,
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: Colors.red.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(4),
                   ),
-                )
-              : ListView.builder(
-                  controller: _scrollController,
-                  padding: const EdgeInsets.all(12),
-                  itemCount: terminalState.entries.length,
-                  itemBuilder: (context, index) {
-                    final entry = terminalState.entries[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 1),
-                      child: SelectableText(
-                        entry.content,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    spacing: 4,
+                    children: [
+                      Icon(Icons.stop_rounded, color: Colors.red, size: 18),
+                      Text(
+                        '停止',
                         style: TextStyle(
-                          fontFamily: 'GeistMono',
-                          fontSize: 13,
-                          height: 1.4,
-                          color: _getEntryColor(entry.type),
+                          color: Colors.red,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                    );
-                  },
+                    ],
+                  ),
                 ),
+              ),
+            )
+          : null,
+      expandContent: true,
+      content: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: const Color(0xFF1E1E1E),
+          borderRadius: theme.borderRadiusSm,
         ),
+        child: entriesCount == 0
+            ? Center(
+                child: Text(
+                  '等待任务执行...',
+                  style: TextStyle(
+                    color: const Color(0xFF569CD6),
+                    fontSize: 13,
+                  ),
+                ),
+              )
+            : ListView.builder(
+                controller: _scrollController,
+                padding: const EdgeInsets.all(12),
+                itemCount: entriesCount,
+                // 性能优化：禁用自动保持存活，减少内存占用
+                addAutomaticKeepAlives: false,
+                // 性能优化：添加重绘边界
+                addRepaintBoundaries: true,
+                itemBuilder: (context, index) {
+                  final entry = displayEntries[index];
+                  // 使用普通 Text 而非 SelectableText 提升性能
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 1),
+                    child: Text(
+                      entry.content,
+                      style: TextStyle(
+                        fontFamily: 'GeistMono',
+                        fontSize: 13,
+                        height: 1.4,
+                        color: _getEntryColor(entry.type),
+                      ),
+                    ),
+                  );
+                },
+              ),
       ),
     );
   }

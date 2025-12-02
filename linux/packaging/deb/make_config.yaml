@@ -1,4 +1,4 @@
-display_name: Scrcpy GUI
+display_name: UI Pretrain Manager
 package_name: scrcpygui
 maintainer:
   name: pizi-0
@@ -16,15 +16,15 @@ dependencies:
   - libdbusmenu-glib.so.4
 
 postinstall_scripts:
-  - echo "Scrcpy GUI installed successfully"
+  - echo "UI Pretrain Manager installed successfully"
 postuninstall_scripts:
-  - echo "Scrcpy GUI uninstalled successfully"
+  - echo "UI Pretrain Manager uninstalled successfully"
 
 keywords:
   - scrcpy
   - gui
 
-generic_name: Scrcpy GUI
+generic_name: UI Pretrain Manager
 
 categories:
   - Utility

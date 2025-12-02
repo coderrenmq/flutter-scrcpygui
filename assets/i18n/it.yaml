@@ -456,7 +456,7 @@ companion_loc:
       label: Endpoint server
     name: 
       label: Nome server
-      info: 'Predefinito: Scrcpy GUI'
+      info: 'Predefinito: UI Pretrain Manager'
     port: 
       label: Porta server
       info: 'Predefinito: 8080'
@@ -482,7 +482,7 @@ about_loc:
 
 # quit dialog
 quit_dialog_loc:
-  title: Uscire da Scrcpy GUI?
+  title: Uscire da UI Pretrain Manager?
   kill_running:
     label: Arrestare le istanze in esecuzione?
     info: ${count} istanza(e) di scrcpy. Le istanze senza finestra verranno arrestate comunque.

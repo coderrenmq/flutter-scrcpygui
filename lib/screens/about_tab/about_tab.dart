@@ -123,7 +123,7 @@ class _AboutTabState extends ConsumerState<AboutTab> {
             ],
           ),
         PgSectionCard(
-          label: 'Scrcpy GUI',
+          label: 'UI Pretrain Manager',
           children: [
             Basic(
               leading: Image.asset('assets/logo.png', height: 100),

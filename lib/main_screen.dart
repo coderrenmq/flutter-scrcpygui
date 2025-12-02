@@ -134,13 +134,13 @@ class _MainScreenState extends ConsumerState<MainScreen>
       if (!listEquals(previous, next)) {
         await TrayUtils.initTray(ref, context);
         
-        // 清理已断开设备的终端状态
+        // 清理已断开设备的终端状态 - 使用 id 匹配，确保唯一性
         if (previous != null) {
           final disconnectedDevices = previous
-              .where((d) => !next.any((n) => n.serialNo == d.serialNo))
+              .where((d) => !next.any((n) => n.id == d.id))
               .toList();
           for (final device in disconnectedDevices) {
-            ref.read(terminalStateProvider.notifier).removeDevice(device.serialNo);
+            ref.read(terminalStateProvider.notifier).removeDevice(device.id);
           }
         }
       }

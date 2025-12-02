@@ -13,7 +13,7 @@ class DeviceSettingsStateNotifier
   build(AdbDevices device) {
     final info = ref
         .read(infoProvider)
-        .firstWhereOrNull((info) => info.serialNo == device.serialNo);
+        .firstWhereOrNull((info) => info.deviceId == device.id);
 
     final autolaunch = ref
         .read(autoLaunchProvider)

@@ -33,7 +33,7 @@ class _InfoPaneState extends ConsumerState<InfoPane> {
 
     final deviceInfo = ref
         .watch(infoProvider)
-        .firstWhereOrNull((info) => info.serialNo == dev.serialNo);
+        .firstWhereOrNull((info) => info.deviceId == dev.id);
 
     return PgSectionCardNoScroll(
       expandContent: widget.expandContent,
@@ -219,7 +219,7 @@ class _InfoPaneState extends ConsumerState<InfoPane> {
 
     final deviceInfo = ref
         .read(infoProvider)
-        .firstWhereOrNull((info) => info.serialNo == dev.serialNo);
+        .firstWhereOrNull((info) => info.deviceId == dev.id);
 
     final info =
         await AdbUtils.getDeviceInfoFor(ref.read(execDirProvider), dev);

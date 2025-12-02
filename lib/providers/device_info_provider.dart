@@ -13,13 +13,14 @@ class DeviceInfoNotifier extends Notifier<List<DeviceInfo>> {
   }
 
   void _addDeviceInfo(DeviceInfo deviceInfo) {
-    if (state.where((infos) => infos.serialNo == deviceInfo.serialNo).isEmpty) {
+    // 使用 deviceId 作为唯一标识，避免模拟器等 serialNo 相同的问题
+    if (state.where((infos) => infos.deviceId == deviceInfo.deviceId).isEmpty) {
       state = [...state, deviceInfo];
     }
   }
 
   void removeDeviceInfo(DeviceInfo deviceInfo) {
-    state = [...state.where((info) => info.serialNo != deviceInfo.serialNo)];
+    state = [...state.where((info) => info.deviceId != deviceInfo.deviceId)];
   }
 
   void addOrEditDeviceInfo(DeviceInfo deviceInfo) {

@@ -199,7 +199,7 @@ final defaultAppBehaviour = AppBehaviour(
 
 final defaultCompanionServerSettings = CompanionServerSettings(
   id: Uuid().v4(),
-  name: 'Scrcpy GUI',
+  name: 'UI Pretrain Manager',
   port: '8080',
   startOnLaunch: false,
   endpoint: '',

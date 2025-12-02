@@ -32,7 +32,7 @@ class AppConfigState extends ConsumerState<AppConfig> {
 
     final deviceInfo = ref
         .watch(infoProvider)
-        .firstWhere((info) => info.serialNo == selectedDevice!.serialNo);
+        .firstWhere((info) => info.deviceId == selectedDevice!.id);
 
     final appList = deviceInfo.appList;
 
@@ -147,7 +147,7 @@ class AppConfigState extends ConsumerState<AppConfig> {
     final workDir = ref.read(execDirProvider);
     var deviceInfo = ref
         .read(infoProvider)
-        .firstWhere((info) => info.serialNo == dev.serialNo);
+        .firstWhere((info) => info.deviceId == dev.id);
 
     final res = await CommandRunner.runScrcpyCommand(workDir, dev,
         args: ['--list-apps']);

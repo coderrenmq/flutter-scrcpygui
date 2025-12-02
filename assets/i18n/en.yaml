@@ -475,7 +475,7 @@ companion_loc:
       label: Server endpoint
     name: 
       label: Server name
-      info: 'Default: Scrcpy GUI'
+      info: 'Default: UI Pretrain Manager'
     port: 
       label: Server port
       info: 'Default: 8080'
@@ -503,7 +503,7 @@ about_loc:
 
 # quit dialog
 quit_dialog_loc:
-  title: Quit Scrcpy GUI?
+  title: Quit UI Pretrain Manager?
   kill_running:
     label: Stop running instances?
     info: ${count} scrcpy instance(s). Instances without a window will be stopped regardless.

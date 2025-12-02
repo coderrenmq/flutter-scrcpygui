@@ -455,7 +455,7 @@ companion_loc:
       label: サーバーエンドポイント
     name:
       label: サーバー名
-      info: 'デフォルト: Scrcpy GUI'
+      info: 'デフォルト: UI Pretrain Manager'
     port:
       label: サーバーポート
       info: 'デフォルト: 8080'
@@ -481,7 +481,7 @@ about_loc:
 
 # quit dialog
 quit_dialog_loc:
-  title: Scrcpy GUIを終了しますか？
+  title: UI Pretrain Managerを終了しますか？
   kill_running:
     label: 実行中のプロセスを終了しますか？
     info: ${count} 個のscrcpy。ウィンドウのないインスタンスは、とにかく停止されます。

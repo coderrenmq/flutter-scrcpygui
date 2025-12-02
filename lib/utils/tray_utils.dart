@@ -37,7 +37,7 @@ class TrayUtils {
     if (behaviour.traySupport) {
       await trayManager.setIcon(_trayIcon());
       if (!Platform.isLinux) {
-        await trayManager.setToolTip('Scrcpy GUI');
+        await trayManager.setToolTip('UI Pretrain Manager');
       }
 
       final menu = await TrayUtils.trayMenu(ref, context);
@@ -78,7 +78,7 @@ class TrayUtils {
         MenuItem(label: 'New instance:', disabled: true),
         ...connected.map((device) {
           final deviceInfo =
-              info.firstWhereOrNull((info) => info.serialNo == device.serialNo);
+              info.firstWhereOrNull((info) => info.deviceId == device.id);
 
           return MenuItem.submenu(
             key: device.id,

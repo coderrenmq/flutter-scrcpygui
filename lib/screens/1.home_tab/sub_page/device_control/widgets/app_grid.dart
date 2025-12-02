@@ -77,7 +77,7 @@ class _AppGridState extends ConsumerState<AppGrid> {
 
     final deviceInfo = ref
         .watch(infoProvider)
-        .firstWhere((info) => info.serialNo == device.serialNo);
+        .firstWhere((info) => info.deviceId == device.id);
 
     final appsList = deviceInfo.appList
         .where((app) => devicePairs.where((dp) => dp.app == app).isEmpty)
@@ -294,7 +294,7 @@ class _AppGridState extends ConsumerState<AppGrid> {
     final workDir = ref.read(execDirProvider);
     var deviceInfo = ref
         .read(infoProvider)
-        .firstWhere((info) => info.serialNo == dev.serialNo);
+        .firstWhere((info) => info.deviceId == dev.id);
 
     final res = await CommandRunner.runScrcpyCommand(workDir, dev,
         args: ['--list-apps']);
@@ -328,7 +328,7 @@ class _AppGridHeaderState extends ConsumerState<AppGridHeader> {
 
     final deviceInfo = ref
         .watch(infoProvider)
-        .firstWhereOrNull((i) => i.serialNo == device.serialNo);
+        .firstWhereOrNull((i) => i.deviceId == device.id);
 
     final gridSettings = ref.watch(appGridSettingsProvider);
     final gridSettingsNotifier = ref.read(appGridSettingsProvider.notifier);

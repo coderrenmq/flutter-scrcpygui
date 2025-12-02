@@ -165,12 +165,12 @@ class _DataCollectionTitleState extends ConsumerState<DataCollectionTitle> {
 
     final deviceInfo = ref
         .watch(infoProvider)
-        .firstWhereOrNull((info) => info.serialNo == device.serialNo);
+        .firstWhereOrNull((info) => info.deviceId == device.id);
 
     return Row(
       spacing: 8,
       children: [
-        Text('预训练数据采集').bold.xLarge,
+        Text('Pretrain Data Crawl').bold.xLarge,
         Text('/'),
         if (connected.length > 1) ...[
           Expanded(
@@ -188,7 +188,7 @@ class _DataCollectionTitleState extends ConsumerState<DataCollectionTitle> {
                   items: SelectItemList(
                       children: connected.map((e) {
                     final info = ref.read(infoProvider).firstWhereOrNull(
-                          (info) => info.serialNo == e.serialNo,
+                          (info) => info.deviceId == e.id,
                         );
 
                     return SelectItemButton(
@@ -206,7 +206,7 @@ class _DataCollectionTitleState extends ConsumerState<DataCollectionTitle> {
                 ).call,
                 itemBuilder: (context, dev) {
                   final info = ref.read(infoProvider).firstWhereOrNull(
-                        (info) => info.serialNo == dev.serialNo,
+                        (info) => info.deviceId == dev.id,
                       );
                   return Row(
                     spacing: 4,

@@ -2,7 +2,7 @@
 <component type="desktop-application">
   <!--Created with jdAppStreamEdit 9.2-->
   <id>io.github.pizi_0.flutter-scrcpygui</id>
-  <name>Scrcpy GUI</name>
+  <name>UI Pretrain Manager</name>
   <summary>A user friendly GUI for scrcpy</summary>
   <developer id="io.github.pizi-0">
     <name>pizi-0</name>
@@ -11,7 +11,7 @@
   <project_license>GPL-3.0-only</project_license>
   <update_contact>hafizirahim92@gmail.com</update_contact>
   <description>
-    <p>Scrcpy GUI simplifies the process of using Scrcpy, allowing you to control your Android device from your computer with ease. It provides a clean and intuitive interface, eliminating the need to memorize complex command-line arguments.</p>
+    <p>UI Pretrain Manager is a tool for managing UI automation pretrain data collection on Android devices.</p>
     <ul>
       <li>Effortless Scrcpy Setup: Easily configure and launch Scrcpy with a few clicks.</li>
       <li>Config Management: Save and manage multiple Scrcpy configurations for different devices or use cases.</li>

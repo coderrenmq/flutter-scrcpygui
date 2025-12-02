@@ -18,6 +18,7 @@ import 'package:scrcpygui/utils/tray_utils.dart';
 
 import '../providers/adb_provider.dart';
 import '../providers/scrcpy_provider.dart';
+import '../providers/terminal_provider.dart';
 import '../widgets/navigation_shell.dart';
 import '../widgets/quit_dialog.dart';
 import 'const.dart';
@@ -90,6 +91,9 @@ class AppUtils {
       if (trackDevicesPID != null) {
         Process.killPid(trackDevicesPID);
       }
+
+      // 清理所有终端进程
+      ref.read(terminalStateProvider.notifier).disposeAll();
 
       await windowManager.isPreventClose();
       await windowManager.setPreventClose(false);

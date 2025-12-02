@@ -474,7 +474,7 @@ companion_loc:
       label: 服务器端点
     name:
       label: 服务器名称
-      info: '默认: Scrcpy GUI'
+      info: '默认: UI Pretrain Manager'
     port:
       label: 服务器端口
       info: '默认: 8080'
@@ -502,7 +502,7 @@ about_loc:
 
 # quit dialog
 quit_dialog_loc:
-  title: 退出 Scrcpy GUI？
+  title: 退出 UI Pretrain Manager？
   kill_running:
     label: 停止运行实例？
     info: ${count} 个 scrcpy 实例。无窗口的实例将被停止。

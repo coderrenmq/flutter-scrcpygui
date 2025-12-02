@@ -61,7 +61,7 @@ class _ConfigScreenState extends ConsumerState<ConfigScreen> {
 
     final deviceInfo = ref
         .read(infoProvider)
-        .firstWhereOrNull((info) => info.serialNo == selectedDevice.serialNo);
+        .firstWhereOrNull((info) => info.deviceId == selectedDevice.id);
 
     namecontroller = TextEditingController(text: config!.configName);
 
@@ -161,7 +161,7 @@ class _ConfigScreenState extends ConsumerState<ConfigScreen> {
 
     final deviceInfo = ref
         .watch(infoProvider)
-        .firstWhereOrNull((info) => info.serialNo == selectedDevice?.serialNo);
+        .firstWhereOrNull((info) => info.deviceId == selectedDevice?.id);
 
     final isEditing =
         allConfigs.where((c) => c.id == selectedConfig.id).isNotEmpty;

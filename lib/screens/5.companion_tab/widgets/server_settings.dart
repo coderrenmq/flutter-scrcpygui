@@ -46,7 +46,7 @@ class _ServerSettingsState extends ConsumerState<ServerSettings> {
     nameController.text = ref.read(companionServerProvider).name;
     nameController.addListener(() {
       if (nameController.text.isEmpty) {
-        ref.read(companionServerProvider.notifier).setServerName('Scrcpy GUI');
+        ref.read(companionServerProvider.notifier).setServerName('UI Pretrain Manager');
         return;
       }
 

@@ -16,7 +16,7 @@ class ScrcpyCommand {
       {String? customName}) {
     final deviceInfo = ref
         .read(infoProvider)
-        .firstWhere((info) => info.serialNo == device.serialNo);
+        .firstWhere((info) => info.deviceId == device.id);
     String command = '';
 
     command = command

@@ -171,6 +171,14 @@ class TerminalStateNotifier extends StateNotifier<Map<String, DeviceTerminalStat
     state = Map.from(state)..remove(serialNo);
   }
 
+  /// 清理所有设备的终端进程（程序关闭时调用）
+  void disposeAll() {
+    for (final entry in state.entries) {
+      entry.value.currentProcess?.kill();
+    }
+    state = {};
+  }
+
   /// 中断当前执行的命令
   void interruptCommand(String serialNo) {
     final current = state[serialNo];

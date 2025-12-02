@@ -32,5 +32,5 @@ build\windows\x64\runner\release
 ```
 - mac
 ```
-build/macos/Build/Products/Release/Scrcpy GUI.app
+build/macos/Build/Products/Release/UI Pretrain Manager.app
 ```

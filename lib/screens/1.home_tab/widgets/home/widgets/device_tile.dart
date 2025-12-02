@@ -50,11 +50,11 @@ class _DeviceTileState extends ConsumerState<DeviceTile> {
 
     final deviceInfo = ref
         .watch(infoProvider)
-        .firstWhereOrNull((info) => info.serialNo == widget.device.serialNo);
+        .firstWhereOrNull((info) => info.deviceId == widget.device.id);
 
-    // 监听终端状态
+    // 监听终端状态 - 使用 id 而非 serialNo，确保模拟器等场景下的唯一性
     final terminalStates = ref.watch(terminalStateProvider);
-    final terminalState = terminalStates[widget.device.serialNo];
+    final terminalState = terminalStates[widget.device.id];
     final isAutomationRunning = terminalState?.isExecuting ?? false;
     final runningAppName = terminalState?.runningAppName;
 
@@ -143,22 +143,22 @@ class _DeviceTileState extends ConsumerState<DeviceTile> {
                           ],
                         ),
                       IconButton.ghost(
-                        icon: Icon(Icons.apps),
-                        onPressed: () {
-                          ref.read(selectedDeviceProvider.notifier).state =
-                              widget.device;
-
-                          context.push('/home/device-control',
-                              extra: widget.device);
-                        },
-                      ),
-                      IconButton.ghost(
                         icon: Icon(Icons.terminal_rounded),
                         onPressed: () {
                           ref.read(selectedDeviceProvider.notifier).state =
                               widget.device;
 
                           context.push('/home/data-collection',
+                              extra: widget.device);
+                        },
+                      ),
+                      IconButton.ghost(
+                        icon: Icon(Icons.apps),
+                        onPressed: () {
+                          ref.read(selectedDeviceProvider.notifier).state =
+                              widget.device;
+
+                          context.push('/home/device-control',
                               extra: widget.device);
                         },
                       ),

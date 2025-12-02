@@ -9434,7 +9434,7 @@ LocalizationMessages get en => LocalizationMessages(
           ),
           name: CompanionLocServerName(
             label: 'Server name',
-            info: 'Default: Scrcpy GUI',
+            info: 'Default: UI Pretrain Manager',
           ),
           port: CompanionLocServerPort(
             label: 'Server port',
@@ -9462,7 +9462,7 @@ LocalizationMessages get en => LocalizationMessages(
         credits: 'Credits',
       ),
       quitDialogLoc: QuitDialogLoc(
-        title: 'Quit Scrcpy GUI?',
+        title: 'Quit UI Pretrain Manager?',
         killRunning: QuitDialogLocKillRunning(
           label: 'Stop running instances?',
           info: ({required String count}) =>
@@ -10162,7 +10162,7 @@ LocalizationMessages get es => LocalizationMessages(
           ),
           name: CompanionLocServerName(
             label: 'Nombre del servidor',
-            info: 'Predeterminado: Scrcpy GUI',
+            info: 'Predeterminado: UI Pretrain Manager',
           ),
           port: CompanionLocServerPort(
             label: 'Puerto del servidor',
@@ -10887,7 +10887,7 @@ LocalizationMessages get it => LocalizationMessages(
           ),
           name: CompanionLocServerName(
             label: 'Nome server',
-            info: 'Predefinito: Scrcpy GUI',
+            info: 'Predefinito: UI Pretrain Manager',
           ),
           port: CompanionLocServerPort(
             label: 'Porta server',
@@ -10915,7 +10915,7 @@ LocalizationMessages get it => LocalizationMessages(
         credits: 'Crediti',
       ),
       quitDialogLoc: QuitDialogLoc(
-        title: 'Uscire da Scrcpy GUI?',
+        title: 'Uscire da UI Pretrain Manager?',
         killRunning: QuitDialogLocKillRunning(
           label: 'Arrestare le istanze in esecuzione?',
           info: ({required String count}) =>
@@ -11587,7 +11587,7 @@ LocalizationMessages get ja => LocalizationMessages(
           ),
           name: CompanionLocServerName(
             label: 'サーバー名',
-            info: 'デフォルト: Scrcpy GUI',
+            info: 'デフォルト: UI Pretrain Manager',
           ),
           port: CompanionLocServerPort(
             label: 'サーバーポート',
@@ -11615,7 +11615,7 @@ LocalizationMessages get ja => LocalizationMessages(
         credits: 'クレジット',
       ),
       quitDialogLoc: QuitDialogLoc(
-        title: 'Scrcpy GUIを終了しますか？',
+        title: 'UI Pretrain Managerを終了しますか？',
         killRunning: QuitDialogLocKillRunning(
           label: '実行中のプロセスを終了しますか？',
           info: ({required String count}) =>
@@ -12310,7 +12310,7 @@ LocalizationMessages get ms => LocalizationMessages(
           ),
           name: CompanionLocServerName(
             label: 'Nama pelayan',
-            info: 'Lalai: Scrcpy GUI',
+            info: 'Lalai: UI Pretrain Manager',
           ),
           port: CompanionLocServerPort(
             label: 'Port pelayan',
@@ -13007,7 +13007,7 @@ LocalizationMessages get zh => LocalizationMessages(
           ),
           name: CompanionLocServerName(
             label: '服务器名称',
-            info: '默认: Scrcpy GUI',
+            info: '默认: UI Pretrain Manager',
           ),
           port: CompanionLocServerPort(
             label: '服务器端口',
@@ -13035,7 +13035,7 @@ LocalizationMessages get zh => LocalizationMessages(
         credits: '致谢',
       ),
       quitDialogLoc: QuitDialogLoc(
-        title: '退出 Scrcpy GUI？',
+        title: '退出 UI Pretrain Manager？',
         killRunning: QuitDialogLocKillRunning(
           label: '停止运行实例？',
           info: ({required String count}) =>
@@ -13733,7 +13733,7 @@ LocalizationMessages get pt_BR => LocalizationMessages(
           ),
           name: CompanionLocServerName(
             label: 'Nome do servidor',
-            info: 'Padrão: Scrcpy GUI',
+            info: 'Padrão: UI Pretrain Manager',
           ),
           port: CompanionLocServerPort(
             label: 'Porta do servidor',
@@ -13761,7 +13761,7 @@ LocalizationMessages get pt_BR => LocalizationMessages(
         credits: 'Créditos',
       ),
       quitDialogLoc: QuitDialogLoc(
-        title: 'Sair do Scrcpy GUI?',
+        title: 'Sair do UI Pretrain Manager?',
         killRunning: QuitDialogLocKillRunning(
           label: 'Parar instâncias em execução?',
           info: ({required String count}) =>

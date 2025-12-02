@@ -456,7 +456,7 @@ companion_loc:
       label: Titik akhir pelayan
     name: 
       label: Nama pelayan
-      info: 'Lalai: Scrcpy GUI'
+      info: 'Lalai: UI Pretrain Manager'
     port: 
       label: Port pelayan
       info: 'Lalai: 8080'

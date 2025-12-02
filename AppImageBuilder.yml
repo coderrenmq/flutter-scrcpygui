@@ -4,7 +4,7 @@ AppDir:
   path: /home/pizi/Documents/Projects/scrcpygui/AppDir
   app_info:
     id: com.piji.scrcpygui
-    name: Scrcpy GUI
+    name: UI Pretrain Manager
     icon: application-vnd.appimage
     version: latest
     exec: scrcpygui

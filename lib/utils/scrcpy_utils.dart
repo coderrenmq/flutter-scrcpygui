@@ -95,7 +95,7 @@ class ScrcpyUtils {
 
     final deviceInfo = ref
         .read(infoProvider)
-        .firstWhereOrNull((info) => info.serialNo == selectedDevice.serialNo);
+        .firstWhereOrNull((info) => info.deviceId == selectedDevice.id);
 
     List<String> comm = [];
     String customName =
@@ -170,7 +170,7 @@ class ScrcpyUtils {
 
     final deviceInfo = ref
         .read(infoProvider)
-        .firstWhereOrNull((info) => info.serialNo == device.serialNo);
+        .firstWhereOrNull((info) => info.deviceId == device.id);
 
     if (deviceInfo == null) {
       final info =
@@ -307,7 +307,7 @@ class ScrcpyUtils {
         if (reso == DEFAULT) {
           final info = ref
               .read(infoProvider)
-              .firstWhereOrNull((i) => i.serialNo == device.serialNo);
+              .firstWhereOrNull((i) => i.deviceId == device.id);
 
           if (info == null) {
             logger.e('No display info for device (${device.id})');
@@ -366,7 +366,7 @@ class ScrcpyUtils {
 
     final instances = ref.read(scrcpyInstanceProvider);
     final info =
-        ref.read(infoProvider).firstWhere((i) => i.serialNo == device.serialNo);
+        ref.read(infoProvider).firstWhere((i) => i.deviceId == device.id);
 
     final defaultDeviceResolution = getDisplays(
                 (await CommandRunner.runScrcpyCommand(

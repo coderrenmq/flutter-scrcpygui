@@ -16,6 +16,7 @@ import 'package:window_manager/window_manager.dart';
 import '../db/db.dart';
 import '../providers/poll_provider.dart';
 import '../providers/settings_provider.dart';
+import '../providers/terminal_provider.dart';
 import '../providers/version_provider.dart';
 import '../utils/adb_utils.dart';
 import '../utils/const.dart';
@@ -211,6 +212,9 @@ class _QuitDialogState extends ConsumerState<QuitDialog> {
     if (trackDevicesPID != null) {
       Process.killPid(trackDevicesPID);
     }
+
+    // 清理所有终端进程
+    ref.read(terminalStateProvider.notifier).disposeAll();
 
     await windowManager.isPreventClose();
     await windowManager.setPreventClose(false);

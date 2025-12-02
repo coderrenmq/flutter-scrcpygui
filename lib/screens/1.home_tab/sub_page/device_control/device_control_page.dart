@@ -99,7 +99,7 @@ class _LoungeTitleState extends ConsumerState<LoungeTitle> {
 
     final deviceInfo = ref
         .watch(infoProvider)
-        .firstWhereOrNull((info) => info.serialNo == device.serialNo);
+        .firstWhereOrNull((info) => info.deviceId == device.id);
 
     return Row(
       spacing: 8,
@@ -122,7 +122,7 @@ class _LoungeTitleState extends ConsumerState<LoungeTitle> {
                   items: SelectItemList(
                       children: connected.map((e) {
                     final info = ref.read(infoProvider).firstWhereOrNull(
-                          (info) => info.serialNo == e.serialNo,
+                          (info) => info.deviceId == e.id,
                         );
 
                     return SelectItemButton(
@@ -140,7 +140,7 @@ class _LoungeTitleState extends ConsumerState<LoungeTitle> {
                 ).call,
                 itemBuilder: (context, dev) {
                   final info = ref.read(infoProvider).firstWhereOrNull(
-                        (info) => info.serialNo == dev.serialNo,
+                        (info) => info.deviceId == dev.id,
                       );
                   return Row(
                     spacing: 4,

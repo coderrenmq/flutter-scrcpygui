@@ -456,7 +456,7 @@ companion_loc:
       label: Endpoint del servidor
     name: 
       label: Nombre del servidor
-      info: 'Predeterminado: Scrcpy GUI'
+      info: 'Predeterminado: UI Pretrain Manager'
     port: 
       label: Puerto del servidor
       info: 'Predeterminado: 8080'

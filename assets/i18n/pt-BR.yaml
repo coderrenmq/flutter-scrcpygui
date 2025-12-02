@@ -455,7 +455,7 @@ companion_loc:
       label: Endpoint do servidor
     name:
       label: Nome do servidor
-      info: 'Padrão: Scrcpy GUI'
+      info: 'Padrão: UI Pretrain Manager'
     port:
       label: Porta do servidor
       info: 'Padrão: 8080'
@@ -481,7 +481,7 @@ about_loc:
 
 # quit dialog
 quit_dialog_loc:
-  title: Sair do Scrcpy GUI?
+  title: Sair do UI Pretrain Manager?
   kill_running:
     label: Parar instâncias em execução?
     info: ${count} instância(s) do scrcpy. Instâncias sem janela serão paradas de qualquer maneira.

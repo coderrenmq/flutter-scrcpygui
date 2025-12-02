@@ -42,7 +42,7 @@ class _BigControlPage2State extends ConsumerState<BigControlPage2> {
     );
     final deviceInfo = ref
         .read(infoProvider)
-        .firstWhereOrNull((info) => info.serialNo == widget.device.serialNo);
+        .firstWhereOrNull((info) => info.deviceId == widget.device.id);
 
     WidgetsBinding.instance.addPostFrameCallback((t) {
       if (deviceInfo == null) {
@@ -70,7 +70,7 @@ class _BigControlPage2State extends ConsumerState<BigControlPage2> {
     final device = widget.device;
     final deviceInfo = ref
         .watch(infoProvider)
-        .firstWhereOrNull((info) => info.serialNo == device.serialNo);
+        .firstWhereOrNull((info) => info.deviceId == device.id);
 
     if (deviceInfo == null) {
       return Column(

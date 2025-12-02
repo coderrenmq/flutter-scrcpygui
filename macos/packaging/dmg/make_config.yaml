@@ -1,4 +1,4 @@
-title: Scrcpy GUI
+title: UI Pretrain Manager
 window:
   size:
     width: 600
@@ -15,4 +15,4 @@ contents:
   - x: 192
     y: 100
     type: file
-    path: Scrcpy GUI.app
+    path: UI Pretrain Manager.app
