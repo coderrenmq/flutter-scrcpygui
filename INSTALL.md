@@ -102,6 +102,26 @@ xattr -cr /Applications/UI\ Pretrain\ Manager.app
 1. 点击应用列表标题栏的文件夹图标
 2. 输入正确的自动化项目路径（包含 `main.py` 的目录）
 
+### Q: 连接多台设备时出现 "Too many open files" 错误
+
+**A**: 这是系统文件描述符限制问题。连接大量设备（如 10+ 台）时可能超出 macOS 默认限制。
+
+**解决方案**：增加系统文件描述符限制
+
+```bash
+# 查看当前限制
+ulimit -n
+
+# 临时增加限制（当前终端有效）
+ulimit -n 4096
+
+# 永久增加限制（推荐）
+echo "ulimit -n 4096" >> ~/.zshrc
+source ~/.zshrc
+```
+
+> 💡 **提示**：如果使用大量设备，建议设置为 4096 或更高
+
 ---
 
 ## 卸载

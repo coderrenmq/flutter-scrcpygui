@@ -165,8 +165,8 @@ class TerminalStateNotifier extends StateNotifier<Map<String, DeviceTerminalStat
   void removeDevice(String serialNo) {
     final current = state[serialNo];
     if (current != null) {
-      // 终止正在执行的进程
-      current.currentProcess?.kill();
+      // 终止正在执行的进程并强制结束
+      _killProcess(current.currentProcess);
     }
     state = Map.from(state)..remove(serialNo);
   }
@@ -174,20 +174,48 @@ class TerminalStateNotifier extends StateNotifier<Map<String, DeviceTerminalStat
   /// 清理所有设备的终端进程（程序关闭时调用）
   void disposeAll() {
     for (final entry in state.entries) {
-      entry.value.currentProcess?.kill();
+      _killProcess(entry.value.currentProcess);
     }
     state = {};
+  }
+
+  /// 安全地终止进程，确保释放文件描述符
+  void _killProcess(Process? process) {
+    if (process == null) return;
+    try {
+      // 先发送 SIGTERM 让进程优雅退出
+      process.kill(ProcessSignal.sigterm);
+      // 给进程一点时间清理
+      Future.delayed(const Duration(milliseconds: 100), () {
+        try {
+          // 如果还没退出，强制杀死
+          process.kill(ProcessSignal.sigkill);
+        } catch (_) {}
+      });
+    } catch (_) {
+      // 进程可能已经退出，忽略错误
+    }
   }
 
   /// 中断当前执行的命令
   void interruptCommand(String serialNo) {
     final current = state[serialNo];
     if (current != null && current.currentProcess != null) {
-      current.currentProcess!.kill(ProcessSignal.sigint);
-      addEntry(serialNo, TerminalEntry(
-        type: TerminalEntryType.info,
-        content: '^C',
-      ));
+      try {
+        // 发送 SIGINT 模拟 Ctrl+C
+        current.currentProcess!.kill(ProcessSignal.sigint);
+        addEntry(serialNo, TerminalEntry(
+          type: TerminalEntryType.info,
+          content: '^C',
+        ));
+        // 更新状态
+        setExecuting(serialNo, false);
+      } catch (e) {
+        addEntry(serialNo, TerminalEntry(
+          type: TerminalEntryType.error,
+          content: '停止任务失败: $e',
+        ));
+      }
     }
   }
 

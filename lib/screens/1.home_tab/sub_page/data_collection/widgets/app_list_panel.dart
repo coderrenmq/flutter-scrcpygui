@@ -327,17 +327,22 @@ class _AppListPanelState extends ConsumerState<AppListPanel> {
               child: Icon(Icons.android_rounded).iconSmall(),
             ),
           ),
-          IconButton.ghost(
-            enabled: !_isLoading,
-            density: ButtonDensity.iconDense,
-            icon: _isLoading
-                ? SizedBox(
-                    width: 14,
-                    height: 14,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                : Icon(Icons.refresh_rounded),
-            onPressed: _refreshAppList,
+          Tooltip(
+            tooltip: const TooltipContainer(
+              child: Text('刷新应用列表'),
+            ),
+            child: IconButton.ghost(
+              enabled: !_isLoading,
+              density: ButtonDensity.iconDense,
+              icon: _isLoading
+                  ? SizedBox(
+                      width: 14,
+                      height: 14,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : Icon(Icons.refresh_rounded),
+              onPressed: _refreshAppList,
+            ),
           ),
         ],
       ),
@@ -349,7 +354,7 @@ class _AppListPanelState extends ConsumerState<AppListPanel> {
             padding: const EdgeInsets.only(bottom: 8),
             child: TextField(
               controller: _searchController,
-              placeholder: Text('搜索应用名称或包名...'),
+              placeholder: Text('搜索应用名称或包名，当app不存在时，请先刷新应用列表'),
               filled: true,
               features: [
                 InputFeature.leading(Icon(Icons.search_rounded)),

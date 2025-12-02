@@ -212,6 +212,11 @@ final defaultSettings = AppSettings(
   behaviour: defaultAppBehaviour,
 );
 
+// 应用更新检测 URL（指向您的仓库）
+const appLatestUrl =
+    'https://api.github.com/repos/coderrenmq/flutter-scrcpygui/releases/latest';
+
+// scrcpy 组件更新检测 URL（保持原有 scrcpy 官方仓库）
 const scrcpyLatestUrl =
     'https://api.github.com/repos/Genymobile/scrcpy/releases/latest';
 

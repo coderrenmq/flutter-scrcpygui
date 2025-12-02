@@ -142,30 +142,45 @@ class _DeviceTileState extends ConsumerState<DeviceTile> {
                             Text('( ${deviceInstance.length} )').xSmall()
                           ],
                         ),
-                      IconButton.ghost(
-                        icon: Icon(Icons.terminal_rounded),
-                        onPressed: () {
-                          ref.read(selectedDeviceProvider.notifier).state =
-                              widget.device;
+                      Tooltip(
+                        tooltip: const TooltipContainer(
+                          child: Text('数据采集'),
+                        ),
+                        child: IconButton.ghost(
+                          icon: Icon(Icons.terminal_rounded),
+                          onPressed: () {
+                            ref.read(selectedDeviceProvider.notifier).state =
+                                widget.device;
 
-                          context.push('/home/data-collection',
-                              extra: widget.device);
-                        },
+                            context.push('/home/data-collection',
+                                extra: widget.device);
+                          },
+                        ),
                       ),
-                      IconButton.ghost(
-                        icon: Icon(Icons.apps),
-                        onPressed: () {
-                          ref.read(selectedDeviceProvider.notifier).state =
-                              widget.device;
+                      Tooltip(
+                        tooltip: const TooltipContainer(
+                          child: Text('设备控制'),
+                        ),
+                        child: IconButton.ghost(
+                          icon: Icon(Icons.apps),
+                          onPressed: () {
+                            ref.read(selectedDeviceProvider.notifier).state =
+                                widget.device;
 
-                          context.push('/home/device-control',
-                              extra: widget.device);
-                        },
+                            context.push('/home/device-control',
+                                extra: widget.device);
+                          },
+                        ),
                       ),
-                      IconButton.ghost(
-                        icon: const Icon(Icons.settings),
-                        onPressed: () => context
-                            .push('/home/device-settings/${widget.device.id}'),
+                      Tooltip(
+                        tooltip: const TooltipContainer(
+                          child: Text('设备设置'),
+                        ),
+                        child: IconButton.ghost(
+                          icon: const Icon(Icons.settings),
+                          onPressed: () => context
+                              .push('/home/device-settings/${widget.device.id}'),
+                        ),
                       )
                     ],
                   ),

@@ -438,22 +438,57 @@ List<ScrcpyApp> getAppsList(String res) {
   List<ScrcpyApp> apps = [];
 
   final split = res.split('[server] INFO: List of apps:');
+  if (split.length < 2) return apps;
 
-  final cleaned = split.last
-      .trim()
-      .splitLines()
-      .where((e) => e.trim().startsWith('-') || e.trim().startsWith('*'))
-      .map((e) => e.trimAll.replaceLast(' ', 'split').split('split'))
-      .toList();
+  // 正则表达式匹配：前缀(* 或 -)、app名称、包名
+  // 包名格式：字母、数字、点、下划线组成，以字母开头
+  final appLineRegex = RegExp(
+    r'^\s*[*-]\s+(.+?)\s{2,}([a-zA-Z][a-zA-Z0-9._]*)\s*$',
+  );
 
-  apps = cleaned
-      .where((c) => !c.contains(adbMdns))
-      .map(
-        (e) => ScrcpyApp(
-            name: e.first.replaceAtIndex(index: 0, replacement: '').trim(),
-            packageName: e.last),
-      )
-      .toList();
+  final lines = split.last.trim().splitLines();
+  
+  for (final line in lines) {
+    // 跳过不包含 app 信息的行
+    if (!line.trim().startsWith('-') && !line.trim().startsWith('*')) {
+      continue;
+    }
+    
+    // 跳过包含 adbMdns 的行
+    if (line.contains(adbMdns)) {
+      continue;
+    }
+
+    final match = appLineRegex.firstMatch(line);
+    if (match != null && match.groupCount >= 2) {
+      final name = match.group(1)?.trim() ?? '';
+      final packageName = match.group(2)?.trim() ?? '';
+      
+      if (name.isNotEmpty && packageName.isNotEmpty) {
+        apps.add(ScrcpyApp(name: name, packageName: packageName));
+      }
+    } else {
+      // 回退到旧的解析方式（兼容性）
+      try {
+        final cleaned = line.trimAll;
+        final lastSpaceIndex = cleaned.lastIndexOf(' ');
+        if (lastSpaceIndex > 0) {
+          final packageName = cleaned.substring(lastSpaceIndex + 1).trim();
+          // 验证包名格式
+          if (RegExp(r'^[a-zA-Z][a-zA-Z0-9._]*$').hasMatch(packageName)) {
+            final name = cleaned.substring(0, lastSpaceIndex)
+                .replaceFirst(RegExp(r'^[*-]\s*'), '')
+                .trim();
+            if (name.isNotEmpty) {
+              apps.add(ScrcpyApp(name: name, packageName: packageName));
+            }
+          }
+        }
+      } catch (e) {
+        debugPrint('解析 app 行失败: $line, 错误: $e');
+      }
+    }
+  }
 
   return apps;
 }

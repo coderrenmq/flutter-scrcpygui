@@ -18,6 +18,7 @@ import 'package:scrcpygui/utils/tray_utils.dart';
 
 import '../providers/adb_provider.dart';
 import '../providers/scrcpy_provider.dart';
+import 'const.dart';
 import '../providers/terminal_provider.dart';
 import '../widgets/navigation_shell.dart';
 import '../widgets/quit_dialog.dart';
@@ -128,10 +129,9 @@ class AppUtils {
 
   static Future<String> getLatestAppVersion() async {
     try {
-      final res = await Dio().get(
-          'https://api.github.com/repos/pizi-0/flutter-scrcpygui/releases');
+      final res = await Dio().get(appLatestUrl);
 
-      return res.data.first['tag_name'];
+      return res.data['tag_name'];
     } on DioException catch (_) {
       rethrow;
     }

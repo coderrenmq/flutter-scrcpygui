@@ -12538,7 +12538,7 @@ LocalizationMessages get zh => LocalizationMessages(
         ),
       ),
       configLoc: ConfigLoc(
-        label: ({required String count}) => '''配置 (${count})''',
+        label: ({required String count}) => '''镜像配置 (${count})''',
         new$: '创建',
         select: '选择配置',
         details: '显示详情',
