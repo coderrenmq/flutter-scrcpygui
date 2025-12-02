@@ -29,6 +29,7 @@ import 'providers/adb_provider.dart';
 import 'providers/companion_server_state_provider.dart';
 import 'providers/scrcpy_provider.dart';
 import 'providers/server_settings_provider.dart';
+import 'providers/terminal_provider.dart';
 import 'utils/automation_utils.dart';
 import 'utils/bonsoir_utils.dart';
 import 'utils/const.dart';
@@ -87,7 +88,7 @@ class _MainScreenState extends ConsumerState<MainScreen>
     }
 
     if (eventName == kWindowEventResize) {
-      await windowManager.setMinimumSize(const Size(500, 600));
+      await windowManager.setMinimumSize(const Size(800, 600));
     }
 
     if (Platform.isMacOS) {
@@ -132,6 +133,16 @@ class _MainScreenState extends ConsumerState<MainScreen>
     ref.listen(adbProvider, (previous, next) async {
       if (!listEquals(previous, next)) {
         await TrayUtils.initTray(ref, context);
+        
+        // 清理已断开设备的终端状态
+        if (previous != null) {
+          final disconnectedDevices = previous
+              .where((d) => !next.any((n) => n.serialNo == d.serialNo))
+              .toList();
+          for (final device in disconnectedDevices) {
+            ref.read(terminalStateProvider.notifier).removeDevice(device.serialNo);
+          }
+        }
       }
     });
 

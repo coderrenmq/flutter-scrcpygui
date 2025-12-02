@@ -63,10 +63,14 @@ final adbTrackDevicesStreamProvider = StreamProvider<List<AdbDevices>>((ref) {
 
       // Handle process exit
       adbProcess?.exitCode.then((code) {
-        logger.w('adb track-devices process exited with code $code.');
+        if (code == 0) {
+          logger.i('adb track-devices process exited normally, will restart in 5s...');
+        } else {
+          logger.w('adb track-devices process exited with code $code, will restart in 5s...');
+        }
         if (!controller.isClosed) {
-          controller
-              .addError('ADB track-devices process stopped unexpectedly.');
+          // 使用 addError 触发重新获取设备列表，但这不是真正的错误
+          controller.addError('ADB track-devices process stopped, reconnecting...');
 
           Future.delayed(Duration(seconds: 5), () {
             if (!controller.isClosed) startTracking();

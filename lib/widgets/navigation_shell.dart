@@ -9,7 +9,6 @@ import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scrcpygui/db/db.dart';
 import 'package:scrcpygui/main_screen.dart';
 import 'package:scrcpygui/providers/settings_provider.dart';
-import 'package:scrcpygui/providers/version_provider.dart';
 import 'package:scrcpygui/widgets/auto_arrange_indicator.dart';
 import 'package:scrcpygui/widgets/custom_ui/custom_clippers.dart';
 import 'package:scrcpygui/widgets/custom_ui/pg_navigation_rail.dart';
@@ -88,7 +87,6 @@ class TitleBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final appversion = ref.watch(appVersionProvider);
 
     return Container(
       color: background(context),
@@ -116,11 +114,7 @@ class TitleBar extends ConsumerWidget {
                     ).paddingOnly(left: 3),
                   ),
                   if (!Platform.isMacOS) SizedBox(),
-                  Text('Scrcpy GUI ($appversion)').fontSize(12),
-                  const Text('by pizi-0')
-                      .fontSize(8)
-                      .underline()
-                      .paddingOnly(top: 4.5),
+                  Text('UI Pretrain Manager (0.1)').fontSize(12),
                 ],
               ).paddingOnly(left: 8),
             ),

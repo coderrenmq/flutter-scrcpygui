@@ -16,6 +16,7 @@ import '../../../../../models/adb_devices.dart';
 import '../../../../../models/scrcpy_related/scrcpy_running_instance.dart';
 import '../../../../../providers/adb_provider.dart';
 import '../../../../../providers/scrcpy_provider.dart';
+import '../../../../../providers/terminal_provider.dart';
 import '../../../../../providers/version_provider.dart';
 import '../../../../../utils/adb_utils.dart';
 import '../../../../../utils/scrcpy_utils.dart';
@@ -50,6 +51,12 @@ class _DeviceTileState extends ConsumerState<DeviceTile> {
     final deviceInfo = ref
         .watch(infoProvider)
         .firstWhereOrNull((info) => info.serialNo == widget.device.serialNo);
+
+    // 监听终端状态
+    final terminalStates = ref.watch(terminalStateProvider);
+    final terminalState = terminalStates[widget.device.serialNo];
+    final isAutomationRunning = terminalState?.isExecuting ?? false;
+    final runningAppName = terminalState?.runningAppName;
 
     final contextMenu = [
       MenuLabel(
@@ -119,6 +126,12 @@ class _DeviceTileState extends ConsumerState<DeviceTile> {
                   trailing: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      // 自动化任务运行状态
+                      _buildAutomationStatus(
+                        isRunning: isAutomationRunning,
+                        appName: runningAppName,
+                      ),
+                      const SizedBox(width: 8),
                       if (hasRunningInstance)
                         Row(
                           children: [
@@ -136,6 +149,16 @@ class _DeviceTileState extends ConsumerState<DeviceTile> {
                               widget.device;
 
                           context.push('/home/device-control',
+                              extra: widget.device);
+                        },
+                      ),
+                      IconButton.ghost(
+                        icon: Icon(Icons.terminal_rounded),
+                        onPressed: () {
+                          ref.read(selectedDeviceProvider.notifier).state =
+                              widget.device;
+
+                          context.push('/home/data-collection',
                               extra: widget.device);
                         },
                       ),
@@ -250,6 +273,89 @@ class _DeviceTileState extends ConsumerState<DeviceTile> {
       }
     } catch (e) {
       debugPrint(e.toString());
+    }
+  }
+
+  /// 构建自动化任务状态标识
+  Widget _buildAutomationStatus({
+    required bool isRunning,
+    String? appName,
+  }) {
+    if (isRunning) {
+      return Tooltip(
+        tooltip: TooltipContainer(
+          child: Text(
+            appName != null ? '正在采集: $appName' : '任务运行中',
+            style: const TextStyle(fontSize: 12),
+          ),
+        ),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration: BoxDecoration(
+            color: Colors.orange.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.orange, width: 1),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: 12,
+                height: 12,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.orange,
+                ),
+              ),
+              const SizedBox(width: 4),
+              Text(
+                '运行中',
+                style: TextStyle(
+                  color: Colors.orange,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      return Tooltip(
+        tooltip: const TooltipContainer(
+          child: Text(
+            '空闲',
+            style: TextStyle(fontSize: 12),
+          ),
+        ),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration: BoxDecoration(
+            color: Colors.green.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.green, width: 1),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.check_circle,
+                size: 12,
+                color: Colors.green,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                '空闲',
+                style: TextStyle(
+                  color: Colors.green,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
     }
   }
 }

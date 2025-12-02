@@ -18,7 +18,6 @@ import '../../screens/1.home_tab/sub_page/config_screen/config_screen.dart';
 import '../../screens/3.scrcpy_manager_tab/scrcpy_manager.dart';
 import '../../screens/4.settings_tab/settings_tab.dart';
 import '../../screens/5.companion_tab/companion_tab.dart';
-import '../../screens/about_tab/about_tab.dart';
 
 class PgNavigationRail extends ConsumerStatefulWidget {
   final Color? backgroundColor;
@@ -123,13 +122,6 @@ class _PgNavigationRailState extends ConsumerState<PgNavigationRail>
                 icon: Icons.settings_rounded,
                 label: el.settingsLoc.title,
                 route: SettingsTab.route,
-              ),
-              Divider(),
-              PgNavRailButton(
-                index: 5,
-                icon: Icons.info_rounded,
-                label: el.aboutLoc.title,
-                route: AboutTab.route,
               ),
             ],
           ),
